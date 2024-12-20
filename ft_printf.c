@@ -22,9 +22,11 @@ static int	print_format(char specifier, va_list arguments)
 	else if (specifier == 's')
 		count += print_str((char *)va_arg(arguments, char *));
 	else if (specifier == 'p')
-		count += print_memory(va_arg(arguments, void *),"0123456789abcdef", 16);
+		count += print_memory(va_arg(arguments, unsigned long),"0123456789abcdef", 16);
 	else if (specifier == 'd')
 		count += print_nbr(va_arg(arguments, int), "0123456789abcdef", 10);
+	else if (specifier == 'u')
+		count += print_nbr(va_arg(arguments, unsigned int), "0123456789abcdef", 10);
 	else if (specifier == 'i')
 		count += print_nbr(va_arg(arguments, int), "0123456789abcdef", 10);
 	else if (specifier == 'x')
@@ -56,9 +58,3 @@ int	ft_printf(const char *format, ...)
 	va_end(arguments);
 	return (count);
 }
-
-// int	main(void)
-// {
-// 	ft_printf("%p\n", "fdsafsa");
-// 	printf("%p\n", "fdsafsa");
-// }

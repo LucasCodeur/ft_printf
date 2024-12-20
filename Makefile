@@ -29,8 +29,27 @@ OBJ := $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ) 
-	ar -rcs $(NAME) $^
+	NAME := libftprintf.a
+
+H_FILES := ft_print.h
+
+CC := cc
+
+CFLAGS := -Wall -Werror -Wextra 
+
+SRC = ft_printf.c ft_printf_utils.c \
+
+LIBFT_DIR = ./libft
+
+LIBFT = $(LIBFT_DIR)/libft.a
+
+OBJ := $(SRC:.c=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJ) $(LIBFT) 
 	cp $(LIBFT) $(NAME)
+	ar -rcs $(NAME) $(OBJ)
 
 %.o: %.c $(H_FILES) Makefile
 	$(CC) $(CFLAGS) -c $< -o $@

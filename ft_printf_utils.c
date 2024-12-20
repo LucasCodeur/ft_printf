@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <limits.h>
+#include <stdint.h>
 
 int	ft_putnbr_base(long long nb, char *base, long long size_base)
 {
@@ -38,7 +40,7 @@ int	print_str(char *str)
 	if (!str)
 	{
 		ft_putstr_fd("(null)", 1);
-		return (-1);
+		return (6);
 	}
 	count += ft_putstr_fd(str, 1);
 	return (count);
@@ -49,7 +51,7 @@ int	print_nbr(long long nb, char *base, long long size_base)
 	int	count;
 
 	count = 0;
-	if (nb < 0)
+	if (nb < 0 && size_base == 10)
 	{
 		nb = -nb;
 		count += write(1, "-", 1);
@@ -69,6 +71,12 @@ int	print_memory(void *p, char *base, long long size_base)
 		return (count);
 	}
 	count += ft_putstr_fd("0x", 1);
-	count += print_nbr((unsigned long)p, base, size_base);
+	count += ft_putnbr_base((unsigned long)p, base, size_base);
 	return (count);
+}
+
+int	main(void)
+{
+	ft_printf(" %p %p\n ", LONG_MIN, LONG_MAX);	
+	printf(" %p %p\n ", LONG_MIN, LONG_MAX);	
 }
