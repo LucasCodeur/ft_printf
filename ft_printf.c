@@ -10,51 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "ft_printf.h"
 
-static int	print_format(char specifier, va_list arguments)
+static int	print_format(char format, va_list args)
 {
-	int	count;
+	int		count;
 
 	count = 0;
-	if (specifier == 'c')
-		count += print_char((char)va_arg(arguments, int));
-	else if (specifier == 's')
-		count += print_str((char *)va_arg(arguments, char *));
-	else if (specifier == 'p')
-		count += print_memory(va_arg(arguments, void *),"0123456789abcdef", 16);
-	else if (specifier == 'd')
-		count += print_nbr(va_arg(arguments, int), "0123456789abcdef", 10);
-	else if (specifier == 'u')
-		count += print_nbr(va_arg(arguments, unsigned int), "0123456789abcdef", 10);
-	else if (specifier == 'i')
-		count += print_nbr(va_arg(arguments, int), "0123456789abcdef", 10);
-	else if (specifier == 'x')
-		count += print_nbr(va_arg(arguments, unsigned int), "0123456789abcdef", 16);
-	else if (specifier == 'X')
-		count += print_nbr(va_arg(arguments, unsigned int), "0123456789ABCDEF", 16);
-	else if (specifier == '%')
+	if (format == 'c')
+		count += print_char(va_arg(args, int));
+	else if (format == 's')
+		count += print_str(va_arg(args, char *));
+	else if (format == 'p')
+		count += print_hex(va_arg(args, void *), "0123456789abcdef", 16);
+	else if (format == 'd')
+		count += print_nbr(va_arg(args, int), "0123456789abcdef", 10);
+	else if (format == 'u')
+		count += print_nbr(va_arg(args, unsigned int), "0123456789abcdef", 10);
+	else if (format == 'i')
+		count += print_nbr(va_arg(args, int), "0123456789abcdef", 10);
+	else if (format == 'x')
+		count += print_nbr(va_arg(args, unsigned int), "0123456789abcdef", 16);
+	else if (format == 'X')
+		count += print_nbr(va_arg(args, unsigned int), "0123456789ABCDEF", 16);
+	else if (format == '%')
 		count += write(1, "%", 1);
 	return (count);
 }
 
 int	ft_printf(const char *format, ...)
 {
-	int	count;
-	va_list	arguments;
+	int		count;
+	va_list	args;
 
-	va_start(arguments, format);
+	va_start(args, format);
 	count = 0;
 	while (*format)
 	{
 		if (*format == '%')
-			count += print_format(*++format, arguments);
+			count += print_format(*++format, args);
 		else
 			count += write(1, format, 1);
 		if (count == -1)
-			return (count); 
+			return (count);
 		++format;
 	}
-	va_end(arguments);
+	va_end(args);
 	return (count);
 }
