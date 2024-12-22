@@ -54,7 +54,7 @@ int	ft_printf(const char *format, ...)
 		else
 			count += write(1, format, 1);
 		if (count == -1)
-			return (count);
+			return (-1);
 		++format;
 	}
 	va_end(args);
